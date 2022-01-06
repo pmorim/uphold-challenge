@@ -3,7 +3,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        uphold: '#49cc68',
+        uphold: {
+          main: '#49cc68',
+          paper: '#f5f9fc',
+          title: '#091135',
+          text: '#3d4b5c',
+          muted: '#9aa7b5',
+        },
       },
     },
   },
