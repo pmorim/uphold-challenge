@@ -28,7 +28,7 @@ export function useExchangeRates(currency: string, n = 10, debounceWait = 100) {
   const updateRates = useCallback(
     lodash.debounce(async () => {
       // Grab the 10 first currency pairs
-      let pairs: CurrencyPair[] = (await sdk.getTicker(currency)).slice(0, n);
+      const pairs: CurrencyPair[] = (await sdk.getTicker(currency)).slice(0, n);
 
       // Convert them to a simpler structure
       setRates(
