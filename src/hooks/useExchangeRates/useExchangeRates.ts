@@ -18,7 +18,7 @@ export interface ExchangeRate {
   currency: string;
 }
 
-export function useExchangeRates(currency = 'USD') {
+export function useExchangeRates(currency: string, n = 10) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
@@ -26,7 +26,7 @@ export function useExchangeRates(currency = 'USD') {
 
   const updateRates = useCallback(async (currency: string) => {
     // Grab the 10 first currency pairs
-    let pairs: CurrencyPair[] = (await sdk.getTicker(currency)).slice(0, 10);
+    let pairs: CurrencyPair[] = (await sdk.getTicker(currency)).slice(0, n);
 
     // Convert them to a simpler structure
     setRates(
