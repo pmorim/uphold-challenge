@@ -18,7 +18,8 @@
     "typeRoots": [
       "src/@types",
       "node_modules/@types"
-    ]
+    ],
+    "types": ["vite-plugin-svgr/client"]
   },
   "include": ["./src"]
 }
