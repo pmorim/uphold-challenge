@@ -1,4 +1,4 @@
 declare module '@uphold/uphold-sdk-javascript' {
-  var foo: any;
+  const foo: unknown;
   export = foo;
 }
