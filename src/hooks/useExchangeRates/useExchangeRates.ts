@@ -48,5 +48,8 @@ export function useExchangeRates(currency: string, n = 10, debounceWait = 100) {
     updateRates();
   }, [updateRates]);
 
-  return [rates, updateRates];
+  return [rates, updateRates] as [
+    ExchangeRate[],
+    lodash.DebouncedFunc<() => Promise<void>>,
+  ];
 }
