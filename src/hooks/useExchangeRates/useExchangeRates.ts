@@ -4,6 +4,7 @@ import lodash from 'lodash';
 
 import { useSDK } from '..';
 import { getCurrencyFromPair } from '../../utils';
+import { supportedCurrencies } from '../../assets/currencies';
 
 // The Object that is received from the API
 interface CurrencyPair {
@@ -16,34 +17,37 @@ interface CurrencyPair {
 // A simpler Object that is created from the CurrencyPair
 export interface ExchangeRate {
   rate: string;
-  currency: string;
+  baseCurrency: string;
 }
 
-export function useExchangeRates(currency: string, n = 10, debounceWait = 100) {
+export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
-  const [rates, setRates] = useLocalStorage<ExchangeRate[]>(currency, []);
+  const [rates, setRates] = useLocalStorage<ExchangeRate[]>(baseCurrency, []);
 
   const updateRates = useCallback(
     lodash.debounce(async () => {
-      // Grab the 10 first currency pairs
-      const pairs: CurrencyPair[] = (await sdk.getTicker(currency)).slice(0, n);
+      // Grab the supported currencies
+      const allPairs: CurrencyPair[] = await sdk.getTicker(baseCurrency);
+      const supportedPairs = allPairs.filter(({ pair }) =>
+        supportedCurrencies.has(getCurrencyFromPair(pair, baseCurrency)),
+      );
 
       // Convert them to a simpler structure
       setRates(
-        pairs.map(
-          ({ bid, currency, pair }): ExchangeRate => ({
+        supportedPairs.map(({ bid, pair }): ExchangeRate => {
+          return {
             rate: bid, // Should it use 'bid' or 'ask'?
-            currency: getCurrencyFromPair(pair, currency),
-          }),
-        ),
+            baseCurrency: getCurrencyFromPair(pair, baseCurrency),
+          };
+        }),
       );
-    }, debounceWait),
-    [currency, n, debounceWait],
+    }, wait),
+    [baseCurrency, n, wait],
   );
 
-  // Fetch the new rates on load and when currency is updated
+  // Fetch the new rates on load and when baseCurrency is updated
   useEffect(() => {
     updateRates();
   }, [updateRates]);

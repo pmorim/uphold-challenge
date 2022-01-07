@@ -1,5 +1,7 @@
-export function getCurrencyFromPair(pair: string, otherCurrency: string) {
-  return pair
-    .replace('-', '') // Example: "EUR-USD" -> "EURUSD"
-    .replace(otherCurrency, ''); // Example: "EURUSD" -> "EUR"
+export function getCurrencyFromPair(pair: string, base: string) {
+  return pair.replace(base, ''); // Example: "EURUSD" -> "EUR"
+}
+
+export function formatCurrency(amount: number) {
+  amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }

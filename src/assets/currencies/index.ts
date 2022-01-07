@@ -1,0 +1,47 @@
+/**
+ * Unfortunately, I had to create this Set manually.
+ * That is because the assets didn't cover all of the currencies of the Ticker.
+ * Therefore, to my knowledge, there is no API call that could generate it.
+ */
+
+export const supportedCurrencies = new Set<string>([
+  'AED',
+  'ARS',
+  'AUD',
+  'BAT',
+  'BCH',
+  'BRL',
+  'BTC',
+  'BTG',
+  'CAD',
+  'CHF',
+  'CNY',
+  'Crypto',
+  'DASH',
+  'DKK',
+  'ETH',
+  'EUR',
+  'GBP',
+  'HKD',
+  'ILS',
+  'INR',
+  'JPY',
+  'KES',
+  'LTC',
+  'MXN',
+  'NOK',
+  'NZD',
+  'PHP',
+  'PLN',
+  'RVR',
+  'SEK',
+  'SGD',
+  'UAE',
+  'USD',
+  'VOX',
+  'XAG',
+  'XAU',
+  'XPD',
+  'XPT',
+  'XRP',
+]);
