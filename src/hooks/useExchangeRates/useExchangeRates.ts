@@ -28,7 +28,6 @@ export function useExchangeRates(baseCurrency: string, wait = 100) {
   const [rates, setRates] = useLocalStorage<ExchangeRate[]>(baseCurrency, []);
 
   const updateRates = useCallback(
-    // TODO: Implement the debounce system better
     lodash.debounce(async () => {
       // Fetch all pairs
       const allPairs: CurrencyPair[] = await sdk.getTicker(baseCurrency);
