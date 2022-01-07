@@ -40,9 +40,7 @@ export function Select({ value, options, onChange }: SelectProps) {
                 key={option}
                 value={option}
               >
-                {({ selected }) => (
-                  <Currency currency={option} selected={selected} />
-                )}
+                <Currency currency={option} />
               </Listbox.Option>
             ))}
           </Listbox.Options>
