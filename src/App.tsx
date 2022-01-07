@@ -13,7 +13,7 @@ export function App() {
   const rates = useExchangeRates(baseCurrency);
 
   return (
-    <div className='w-[540px] mx-auto my-14 text-center'>
+    <div className='w-container mx-auto my-14 text-center'>
       <header className='flex flex-col items-center mb-16'>
         <UpholdLogo className='mb-24' />
 

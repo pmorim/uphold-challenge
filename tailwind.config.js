@@ -12,6 +12,9 @@ module.exports = {
           muted: '#9aa7b5',
         },
       },
+      width: {
+        container: '34rem',
+      },
     },
   },
 };
