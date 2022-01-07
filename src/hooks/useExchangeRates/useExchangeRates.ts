@@ -23,7 +23,7 @@ export function useExchangeRates(currency: string, n = 10, debounceWait = 100) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
-  const [rates, setRates] = useLocalStorage<ExchangeRate[]>('rates', []);
+  const [rates, setRates] = useLocalStorage<ExchangeRate[]>(currency, []);
 
   const updateRates = useCallback(
     lodash.debounce(async () => {
