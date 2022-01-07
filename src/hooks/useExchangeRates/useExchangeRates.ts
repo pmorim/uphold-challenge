@@ -4,11 +4,7 @@ import lodash from 'lodash';
 
 import { useSDK } from '..';
 
-import {
-  getCurrencyKeyFromPair,
-  formatCurrency,
-  limitDecimalPlaces,
-} from '../../utils';
+import { getCurrencyKeyFromPair } from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
 
 // The Object that is received from the API
@@ -25,13 +21,14 @@ export interface ExchangeRate {
   baseCurrency: string;
 }
 
-export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
+export function useExchangeRates(baseCurrency: string, wait = 100) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
   const [rates, setRates] = useLocalStorage<ExchangeRate[]>(baseCurrency, []);
 
   const updateRates = useCallback(
+    // TODO: Implement the debounce system better
     lodash.debounce(async () => {
       // Fetch all pairs
       const allPairs: CurrencyPair[] = await sdk.getTicker(baseCurrency);
@@ -59,14 +56,13 @@ export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
       setRates(
         uniquePairs.map(({ bid, pair }): ExchangeRate => {
           return {
-            // * Should it use 'bid' or 'ask'?
-            rate: formatCurrency(limitDecimalPlaces(bid)),
+            rate: bid, // * Should it use 'bid' or 'ask'?
             baseCurrency: getCurrencyKeyFromPair(pair, baseCurrency),
           };
         }),
       );
     }, wait),
-    [baseCurrency, n, wait],
+    [baseCurrency, wait],
   );
 
   // Fetch the new rates on load and when baseCurrency is updated
