@@ -16,7 +16,7 @@ interface CurrencyPair {
 }
 
 // A simpler Object that is created from the CurrencyPair
-export interface ExchangeRate {
+interface ExchangeRate {
   rate: string;
   baseCurrency: string;
 }
