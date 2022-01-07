@@ -28,8 +28,10 @@ export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
 
   const updateRates = useCallback(
     lodash.debounce(async () => {
-      // Grab the supported currencies
+      // Fetch all pairs
       const allPairs: CurrencyPair[] = await sdk.getTicker(baseCurrency);
+
+      // Remove the pairs without an asset
       const supportedPairs = allPairs.filter(({ pair }) =>
         supportedCurrencies.has(getCurrencyFromPair(pair, baseCurrency)),
       );
