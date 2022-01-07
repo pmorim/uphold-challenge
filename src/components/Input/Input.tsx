@@ -22,7 +22,8 @@ export function Input({ value, setValue }: InputProps) {
 
   return (
     <input
-      className='bg-uphold-paper text-uphold-text text-5xl rounded-lg h-20 w-full mb-5 px-5 pr-40'
+      className='bg-uphold-paper text-uphold-text text-5xl rounded-lg h-20 w-full mb-5 pl-5 pr-40 form-input focus:bg-white border-0 focus:border-2 focus:border-uphold-text focus:drop-shadow-none focus:shadow-transparent'
+      type='text'
       value={value}
       onChange={parseInput}
       placeholder='0.00'
