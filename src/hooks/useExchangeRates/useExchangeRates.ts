@@ -54,5 +54,11 @@ export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
     updateRates();
   }, [updateRates]);
 
+  // Cancel queued updates on unmount
+  // This prevents a memory leak
+  useEffect(() => {
+    return () => updateRates.cancel();
+  }, []);
+
   return rates;
 }
