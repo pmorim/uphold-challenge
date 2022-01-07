@@ -3,7 +3,12 @@ import { useLocalStorage } from 'usehooks-ts';
 import lodash from 'lodash';
 
 import { useSDK } from '..';
-import { getCurrencyFromPair } from '../../utils';
+
+import {
+  getCurrencyKeyFromPair,
+  formatCurrency,
+  limitDecimalPlaces,
+} from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
 
 // The Object that is received from the API
@@ -33,15 +38,30 @@ export function useExchangeRates(baseCurrency: string, n = 10, wait = 100) {
 
       // Remove the pairs without an asset
       const supportedPairs = allPairs.filter(({ pair }) =>
-        supportedCurrencies.has(getCurrencyFromPair(pair, baseCurrency)),
+        supportedCurrencies.has(getCurrencyKeyFromPair(pair, baseCurrency)),
       );
+
+      // Remove repeated pairs
+      const seenPairs = new Set<string>([]);
+      const uniquePairs = supportedPairs.filter(({ pair }) => {
+        // Remove repeated pair
+        const key = getCurrencyKeyFromPair(pair, baseCurrency);
+        if (seenPairs.has(key)) return false;
+
+        // Keep unique pair
+        seenPairs.add(key);
+        return true;
+      });
+
+      // TODO: Invert the rate when needed
 
       // Convert them to a simpler structure
       setRates(
-        supportedPairs.map(({ bid, pair }): ExchangeRate => {
+        uniquePairs.map(({ bid, pair }): ExchangeRate => {
           return {
-            rate: bid, // Should it use 'bid' or 'ask'?
-            baseCurrency: getCurrencyFromPair(pair, baseCurrency),
+            // * Should it use 'bid' or 'ask'?
+            rate: formatCurrency(limitDecimalPlaces(bid)),
+            baseCurrency: getCurrencyKeyFromPair(pair, baseCurrency),
           };
         }),
       );
