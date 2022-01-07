@@ -6,9 +6,8 @@ interface CurrencyProps {
 export function Currency({ currency, className }: CurrencyProps) {
   return (
     <div
-      className={`flex flex-row justify-start items-center space-x-2 w-16 ${
-        className ?? ''
-      }`}
+      className={`flex flex-row justify-start items-center space-x-2 w-16
+      ${className ?? ''}`}
     >
       <img
         className='w-6'
