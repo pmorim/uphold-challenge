@@ -12,3 +12,7 @@ export function formatCurrency(amount: number | string) {
   if (typeof amount === 'number') amount = amount.toString();
   return amount.replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
+
+export function applyRate(rate: string, amount: string) {
+  return (Number.parseFloat(rate) * Number.parseFloat(amount)).toString();
+}
