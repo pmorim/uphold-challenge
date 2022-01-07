@@ -1,4 +1,5 @@
-import { Listbox } from '@headlessui/react';
+import { Fragment } from 'react';
+import { Listbox, Transition } from '@headlessui/react';
 
 import { Currency } from '..';
 
@@ -19,20 +20,33 @@ export function Select({ value, options, onChange }: SelectProps) {
           <DropdownIcon className='text-gray-400' aria-hidden='true' />
         </Listbox.Button>
 
-        <Listbox.Options className='absolute top-12 w-full max-h-36 py-1 mt-1 overflow-y-scroll overflow-x-hidden bg-white rounded-lg drop-shadow-xl scrollbar-none'>
-          {options.map((option) => (
-            <Listbox.Option
-              className={({ active }) =>
-                `${active && 'bg-uphold-muted'}
-                cursor-default select-none relative py-2 pl-5`
-              }
-              key={option}
-              value={option}
-            >
-              <Currency currency={option} />
-            </Listbox.Option>
-          ))}
-        </Listbox.Options>
+        <Transition
+          as={Fragment}
+          enter='transition duration-100 ease-out'
+          enterFrom='transform scale-95 opacity-0'
+          enterTo='transform scale-100 opacity-100'
+          leave='transition duration-75 ease-out'
+          leaveFrom='transform scale-100 opacity-100'
+          leaveTo='transform scale-95 opacity-0'
+        >
+          <Listbox.Options className='absolute top-12 w-full max-h-36 py-1 mt-1 overflow-y-scroll overflow-x-hidden bg-white rounded-lg drop-shadow-xl scrollbar-none'>
+            {options.map((option) => (
+              <Listbox.Option
+                className={({ active, selected }) =>
+                  `cursor-default select-none relative py-2 pl-5
+                  ${active && 'bg-uphold-paper'}
+                  ${selected && 'bg-uphold-muted'}`
+                }
+                key={option}
+                value={option}
+              >
+                {({ selected }) => (
+                  <Currency currency={option} selected={selected} />
+                )}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Transition>
       </Listbox>
     </div>
   );
