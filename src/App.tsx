@@ -37,11 +37,11 @@ export function App() {
         </div>
 
         {amount ? (
-          rates.map(({ rate, baseCurrency }) => (
+          rates.map(({ rate, currency }) => (
             <ExchangeRate
-              key={baseCurrency}
+              key={currency}
               value={applyRate(rate, amount)}
-              name={baseCurrency}
+              name={currency}
             />
           ))
         ) : (

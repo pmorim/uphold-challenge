@@ -4,7 +4,7 @@ import lodash from 'lodash';
 
 import { useSDK } from '..';
 
-import { getCurrencyKeyFromPair } from '../../utils';
+import { getCurrencyCodeFromPair } from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
 
 // The Object that is received from the API
@@ -18,10 +18,10 @@ interface CurrencyPair {
 // A simpler Object that is created from the CurrencyPair
 interface ExchangeRate {
   rate: string;
-  baseCurrency: string;
+  currency: string;
 }
 
-export function useExchangeRates(baseCurrency: string, wait = 100) {
+export function useExchangeRates(baseCurrency: string, wait = 5000) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
@@ -34,14 +34,14 @@ export function useExchangeRates(baseCurrency: string, wait = 100) {
 
       // Remove the pairs without an asset
       const supportedPairs = allPairs.filter(({ pair }) =>
-        supportedCurrencies.has(getCurrencyKeyFromPair(pair, baseCurrency)),
+        supportedCurrencies.has(getCurrencyCodeFromPair(pair, baseCurrency)),
       );
 
       // Remove repeated pairs
       const seenPairs = new Set<string>([]);
       const uniquePairs = supportedPairs.filter(({ pair }) => {
         // Remove repeated pair
-        const key = getCurrencyKeyFromPair(pair, baseCurrency);
+        const key = getCurrencyCodeFromPair(pair, baseCurrency);
         if (seenPairs.has(key)) return false;
 
         // Keep unique pair
@@ -49,14 +49,20 @@ export function useExchangeRates(baseCurrency: string, wait = 100) {
         return true;
       });
 
-      // TODO: Invert the rate when needed
-
       // Convert them to a simpler structure
       setRates(
-        uniquePairs.map(({ bid, pair }): ExchangeRate => {
+        uniquePairs.map((uniquePair): ExchangeRate => {
+          // Should it use 'bid' or 'ask'?
+          const rate = uniquePair.ask;
+
           return {
-            rate: bid, // * Should it use 'bid' or 'ask'?
-            baseCurrency: getCurrencyKeyFromPair(pair, baseCurrency),
+            // Invert the rate if the pair is reversed
+            rate: new RegExp(String.raw`^\d+${baseCurrency}$`).test(rate)
+              ? (1 / Number.parseFloat(rate)).toString()
+              : rate,
+
+            // Grab the identifying code of the currency
+            currency: getCurrencyCodeFromPair(uniquePair.pair, baseCurrency),
           };
         }),
       );
@@ -69,7 +75,7 @@ export function useExchangeRates(baseCurrency: string, wait = 100) {
     updateRates();
   }, [updateRates]);
 
-  // Cancel queued updates on unmount
+  // Cancel queued debounce updates on unmount
   // This prevents a memory leak
   useEffect(() => {
     return () => updateRates.cancel();
