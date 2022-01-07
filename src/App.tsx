@@ -8,7 +8,7 @@ import { ReactComponent as UpholdLogo } from './assets/logo/logo.svg';
 import { supportedCurrencies } from './assets/currencies';
 
 export function App() {
-  const [amount, setAmount] = useState<string>();
+  const [amount, setAmount] = useState('');
   const [baseCurrency, setCurrency] = useState('USD');
   const rates = useExchangeRates(baseCurrency);
 
