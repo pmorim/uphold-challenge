@@ -57,9 +57,10 @@ export function useExchangeRates(baseCurrency: string, wait = 5000) {
 
           return {
             // Invert the rate if the pair is reversed
-            rate: new RegExp(String.raw`^\d+${baseCurrency}$`).test(rate)
-              ? (1 / Number.parseFloat(rate)).toString()
-              : rate,
+            rate:
+              uniquePair.currency === baseCurrency
+                ? (1 / Number.parseFloat(rate)).toString()
+                : rate,
 
             // Grab the identifying code of the currency
             currency: getCurrencyCodeFromPair(uniquePair.pair, baseCurrency),
