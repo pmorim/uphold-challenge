@@ -10,7 +10,7 @@ import { supportedCurrencies } from './assets/currencies';
 export function App() {
   const [amount, setAmount] = useState('');
   const [baseCurrency, setCurrency] = useState('USD');
-  const rates = useExchangeRates(baseCurrency);
+  const ratesMap = useExchangeRates(baseCurrency);
 
   // TODO: Make design responsive
   return (
@@ -38,7 +38,7 @@ export function App() {
         </div>
 
         {amount ? (
-          rates.map(({ rate, currency }) => (
+          ratesMap[baseCurrency].map(({ rate, currency }) => (
             <ExchangeRate
               key={currency}
               value={applyRate(rate, amount)}

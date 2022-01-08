@@ -16,11 +16,6 @@ export function formatCurrency(amount: number | string) {
   return amount.replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
-// Apply the conversion rate to the desired amount
-export function applyRate(rate: string, amount: string) {
-  return (Number.parseFloat(rate) * Number.parseFloat(amount)).toString();
-}
-
 // Parse the user's "currency amount" input
 export function parseInput(
   input: string,
