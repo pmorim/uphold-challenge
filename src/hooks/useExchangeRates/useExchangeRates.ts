@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-import lodash from 'lodash';
 
 import { useSDK } from '..';
 import { convertToExchangeRate } from '../../utils';
@@ -11,39 +10,34 @@ for (const currency of supportedCurrencies) {
   defaultRatesMap[currency] = [];
 }
 
-export function useExchangeRates(baseCurrency: string, wait = 500) {
+export function useExchangeRates(baseCurrency: string) {
   const sdk = useSDK();
 
-  // Make sure that the rates are cached to the local storage
+  // Cache the values to local storage
   const [ratesMap, setRatesMap] = useLocalStorage<RatesMap>(
     'RatesMap',
     defaultRatesMap,
   );
-  const setRate = (newRate: ExchangeRate[]) =>
-    setRatesMap((ratesMap) => ({ ...ratesMap, [baseCurrency]: newRate }));
 
-  useEffect(() => console.log(ratesMap), [ratesMap]);
-
-  // Debounce the fetching of rates
-  const updateRates = useMemo(
-    () =>
-      lodash.debounce(async () => {
-        const pairs = await sdk.getTicker(baseCurrency);
-        setRate(convertToExchangeRate(pairs, baseCurrency));
-      }, wait),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [baseCurrency, wait],
+  // Update the cached value of a single currency
+  const setRate = useCallback(
+    (newRate: ExchangeRate[]) => {
+      setRatesMap((ratesMap) => ({ ...ratesMap, [baseCurrency]: newRate }));
+    },
+    [baseCurrency, setRatesMap],
   );
 
-  // Fetch the new rates on load and when 'baseCurrency' changes
+  // Fetch the rates on load and on input change
   useEffect(() => {
+    async function updateRates() {
+      const pairs = await sdk.getTicker(baseCurrency);
+      setRate(convertToExchangeRate(pairs, baseCurrency));
+    }
+
     updateRates();
-  }, [baseCurrency, updateRates]);
 
-  // Cancel queued debounce updates on unmount
-  // This prevents a memory leak
-  useEffect(() => () => updateRates.cancel(), [updateRates]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [baseCurrency]);
 
-  // Return the simplified object
   return ratesMap;
 }
