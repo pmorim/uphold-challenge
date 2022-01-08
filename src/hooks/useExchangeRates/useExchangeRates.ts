@@ -21,14 +21,16 @@ interface ExchangeRate {
   currency: string;
 }
 
-export function useExchangeRates(baseCurrency: string, wait = 5000) {
+export function useExchangeRates(baseCurrency: string, wait = 500) {
   const sdk = useSDK();
 
   // Make sure that the rates are cached to the local storage
   const [rates, setRates] = useLocalStorage<ExchangeRate[]>(baseCurrency, []);
 
+  // TODO: Fix debouncing system
   const updateRates = useCallback(
-    lodash.debounce(async () => {
+    // Cancel the function call if it's called again in less than "wait" seconds
+    lodash.debounce(async (baseCurrency: string) => {
       // Fetch all pairs
       const allPairs: CurrencyPair[] = await sdk.getTicker(baseCurrency);
 
@@ -52,7 +54,7 @@ export function useExchangeRates(baseCurrency: string, wait = 5000) {
       // Convert them to a simpler structure
       setRates(
         uniquePairs.map((uniquePair): ExchangeRate => {
-          // Should it use 'bid' or 'ask'?
+          // Should it be 'bid' or 'ask'?
           const rate = uniquePair.ask;
 
           return {
@@ -68,13 +70,13 @@ export function useExchangeRates(baseCurrency: string, wait = 5000) {
         }),
       );
     }, wait),
-    [baseCurrency, wait],
+    [wait],
   );
 
-  // Fetch the new rates on load and when baseCurrency is updated
+  // Fetch the new rates on load and when baseCurrency changes
   useEffect(() => {
-    updateRates();
-  }, [updateRates]);
+    updateRates(baseCurrency);
+  }, [baseCurrency]);
 
   // Cancel queued debounce updates on unmount
   // This prevents a memory leak
