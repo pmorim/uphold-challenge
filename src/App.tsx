@@ -11,7 +11,6 @@ export function App() {
   const [baseCurrency, setCurrency] = useState('USD');
   const ratesMap = useExchangeRates(baseCurrency);
 
-  // TODO: Make design responsive
   return (
     <div className='max-w-container px-4 mx-auto my-14 text-center'>
       <header className='flex flex-col items-center mb-16'>
