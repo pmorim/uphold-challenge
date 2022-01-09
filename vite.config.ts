@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-//import reactSvgPlugin from 'vite-plugin-react-svg';
+
 import svgrPlugin from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
