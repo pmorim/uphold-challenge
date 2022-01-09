@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { ExchangeRate, Input, Select } from './components';
 import { useExchangeRates } from './hooks';
-import { applyRate } from './utils';
 
 import { ReactComponent as UpholdLogo } from './assets/logo/logo.svg';
 import { supportedCurrencies } from './assets/currencies';
@@ -41,7 +40,8 @@ export function App() {
           ratesMap[baseCurrency].map(({ rate, currency }) => (
             <ExchangeRate
               key={currency}
-              value={applyRate(rate, amount)}
+              rate={rate}
+              amount={amount}
               name={currency}
             />
           ))
