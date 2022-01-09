@@ -1,4 +1,4 @@
-import { ExchangeRate } from '..';
+import { ExchangeRate, Skeleton } from '..';
 
 interface ExchangeRatesListProps {
   rates: Rates;
@@ -18,6 +18,15 @@ export function ExchangeRatesList({ rates, amount }: ExchangeRatesListProps) {
       <span className='text-uphold-muted my-2'>
         Enter an amount to check the rates.
       </span>
+    );
+
+  if (!rates.length)
+    return (
+      <>
+        {[...Array(5)].map((_, idx) => (
+          <Skeleton key={idx} />
+        ))}
+      </>
     );
 
   return (
