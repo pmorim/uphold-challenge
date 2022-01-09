@@ -8,14 +8,14 @@ interface ExchangeRatesListProps {
 export function ExchangeRatesList({ rates, amount }: ExchangeRatesListProps) {
   if (!rates)
     return (
-      <span className='text-red-400 my-2 text-md'>
+      <span className='text-red-400 my-2'>
         Unfortunately, no exchange rates were found for this currency.
       </span>
     );
 
   if (!amount)
     return (
-      <span className='text-uphold-muted my-2 text-md'>
+      <span className='text-uphold-muted my-2'>
         Enter an amount to check the rates.
       </span>
     );
