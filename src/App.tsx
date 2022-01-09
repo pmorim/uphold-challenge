@@ -37,14 +37,20 @@ export function App() {
         </div>
 
         {amount ? (
-          ratesMap[baseCurrency].map(({ rate, currency }) => (
-            <ExchangeRate
-              key={currency}
-              rate={rate}
-              amount={amount}
-              name={currency}
-            />
-          ))
+          ratesMap[baseCurrency].length ? (
+            ratesMap[baseCurrency].map(({ rate, currency }) => (
+              <ExchangeRate
+                key={currency}
+                rate={rate}
+                amount={amount}
+                name={currency}
+              />
+            ))
+          ) : (
+            <span className='text-red-400 my-2 text-md'>
+              Unfortunately, no exchange rates were found for this currency.
+            </span>
+          )
         ) : (
           <span className='text-uphold-muted my-2 text-md'>
             Enter an amount to check the rates.
