@@ -5,7 +5,7 @@ import SDK from '@uphold/uphold-sdk-javascript';
 import { pairsToRates } from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
 
-const sdk = new SDK({
+const sdk = new SDK.default({
   baseUrl: 'http://api-sandbox.uphold.com',
 
   // API keys don't matter since no protected endpoints will be used
