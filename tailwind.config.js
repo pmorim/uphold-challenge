@@ -12,7 +12,7 @@ module.exports = {
           muted: '#9aa7b5',
         },
       },
-      width: {
+      maxWidth: {
         container: '34rem',
       },
     },

@@ -11,6 +11,15 @@ interface SelectProps {
   onChange(newValue: unknown): unknown;
 }
 
+const transition = {
+  enter: 'transition duration-100 ease-out',
+  enterFrom: 'transform scale-95 opacity-0',
+  enterTo: 'transform scale-100 opacity-100',
+  leave: 'transition duration-75 ease-out',
+  leaveFrom: 'transform scale-100 opacity-100',
+  leaveTo: 'transform scale-95 opacity-0',
+};
+
 export function Select({ value, options, onChange }: SelectProps) {
   return (
     <div className='absolute top-6 right-6 bg-white rounded-full px-5 py-3 flex justify-center items-center'>
@@ -20,15 +29,7 @@ export function Select({ value, options, onChange }: SelectProps) {
           <DropdownIcon className='text-gray-400' aria-hidden='true' />
         </Listbox.Button>
 
-        <Transition
-          as={Fragment}
-          enter='transition duration-100 ease-out'
-          enterFrom='transform scale-95 opacity-0'
-          enterTo='transform scale-100 opacity-100'
-          leave='transition duration-75 ease-out'
-          leaveFrom='transform scale-100 opacity-100'
-          leaveTo='transform scale-95 opacity-0'
-        >
+        <Transition as={Fragment} {...transition}>
           <Listbox.Options className='absolute top-12 w-full max-h-36 py-1 mt-1 overflow-y-scroll overflow-x-hidden bg-white rounded-lg drop-shadow-xl scrollbar-none'>
             {options.map((option) => (
               <Listbox.Option

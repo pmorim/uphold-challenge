@@ -13,7 +13,7 @@ export function App() {
 
   // TODO: Make design responsive
   return (
-    <div className='w-container mx-auto my-14 text-center'>
+    <div className='max-w-container px-4 mx-auto my-14 text-center'>
       <header className='flex flex-col items-center mb-16'>
         <UpholdLogo className='mb-24' />
 
