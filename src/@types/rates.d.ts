@@ -1,3 +1,5 @@
+type Rates = ExchangeRate[] | null;
+
 // The Object that is received from the API
 interface CurrencyPair {
   ask: string;
@@ -14,5 +16,5 @@ interface ExchangeRate {
 }
 
 interface RatesMap {
-  [key: string]: ExchangeRate[];
+  [key: string]: Rates;
 }
