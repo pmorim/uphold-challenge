@@ -1,9 +1,17 @@
 import { useCallback, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import SDK from '@uphold/uphold-sdk-javascript';
 
-import { useSDK } from '..';
 import { convertToExchangeRate } from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
+
+const sdk = new SDK({
+  baseUrl: 'http://api-sandbox.uphold.com',
+
+  // API keys don't matter since no protected endpoints will be used
+  clientId: 'foo',
+  clientSecret: 'bar',
+});
 
 const defaultRatesMap: RatesMap = {};
 for (const currency of supportedCurrencies) {
@@ -11,8 +19,6 @@ for (const currency of supportedCurrencies) {
 }
 
 export function useExchangeRates(baseCurrency: string) {
-  const sdk = useSDK();
-
   // Cache the values to local storage
   const [ratesMap, setRatesMap] = useLocalStorage<RatesMap>(
     'RatesMap',
