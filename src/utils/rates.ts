@@ -7,10 +7,7 @@ export function applyRate(rate: string, amount: string) {
 }
 
 // Simplify the received rates from the SDK
-export function convertToExchangeRate(
-  allPairs: CurrencyPair[],
-  baseCurrency: string,
-) {
+export function pairsToRates(allPairs: CurrencyPair[], baseCurrency: string) {
   // Remove the pairs without an asset
   const supportedPairs = allPairs.filter(({ pair }) =>
     supportedCurrencies.has(getCurrencyCodeFromPair(pair, baseCurrency)),

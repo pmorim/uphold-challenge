@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import SDK from '@uphold/uphold-sdk-javascript';
 
-import { convertToExchangeRate } from '../../utils';
+import { pairsToRates } from '../../utils';
 import { supportedCurrencies } from '../../assets/currencies';
 
 const sdk = new SDK({
@@ -27,7 +27,7 @@ export function useExchangeRates(baseCurrency: string) {
 
   // Update the cached value of a single currency
   const setRate = useCallback(
-    (newRate: ExchangeRate[]) => {
+    (newRate: Rates) => {
       setRatesMap((ratesMap) => ({ ...ratesMap, [baseCurrency]: newRate }));
     },
     [baseCurrency, setRatesMap],
@@ -36,8 +36,13 @@ export function useExchangeRates(baseCurrency: string) {
   // Fetch the rates on load and on input change
   useEffect(() => {
     async function updateRates() {
-      const pairs = await sdk.getTicker(baseCurrency);
-      setRate(convertToExchangeRate(pairs, baseCurrency));
+      try {
+        const pairs = await sdk.getTicker(baseCurrency);
+        const rates = pairsToRates(pairs, baseCurrency);
+        setRate(rates);
+      } catch (err) {
+        setRate(null);
+      }
     }
 
     updateRates();
