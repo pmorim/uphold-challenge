@@ -1,6 +1,6 @@
 // Remove the baseCurrency from the pair to retrieve the wanted currency
 export function getCurrencyCodeFromPair(pair: string, base: string) {
-  return pair.replace(base, ''); // Example: "EURUSD" -> "EUR"
+  return pair.replace(base, '').replace('-', '');
 }
 
 // Force the number to have a maximum amount of decimal places
