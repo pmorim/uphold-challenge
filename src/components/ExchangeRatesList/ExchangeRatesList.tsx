@@ -1,4 +1,6 @@
-import { ExchangeRate, Skeleton } from '..';
+import { useBoolean } from 'usehooks-ts';
+
+import { ExchangeRate, ShowAll, Skeleton } from '..';
 
 interface ExchangeRatesListProps {
   rates: Rates;
@@ -6,6 +8,8 @@ interface ExchangeRatesListProps {
 }
 
 export function ExchangeRatesList({ rates, amount }: ExchangeRatesListProps) {
+  const showAll = useBoolean(false);
+
   if (!rates)
     return (
       <span className='text-red-400 my-2'>
@@ -31,14 +35,18 @@ export function ExchangeRatesList({ rates, amount }: ExchangeRatesListProps) {
 
   return (
     <>
-      {rates?.map(({ rate, currency }) => (
-        <ExchangeRate
-          key={currency}
-          rate={rate}
-          amount={amount}
-          name={currency}
-        />
-      ))}
+      {rates
+        .slice(0, showAll.value ? undefined : 10)
+        .map(({ rate, currency }) => (
+          <ExchangeRate
+            key={currency}
+            rate={rate}
+            amount={amount}
+            name={currency}
+          />
+        ))}
+
+      <ShowAll show={showAll.value} toggle={showAll.toggle} />
     </>
   );
 }
