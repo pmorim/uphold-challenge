@@ -69,6 +69,7 @@ To solve this problem the developer:
 - [X] The exchange rates are formatted with a thousands separator.
 - [X] The currency input sticks to the top of the page on scroll for the user's convenience.
 - [X] Only 10 currencies are shown initially, although the user can expand the list to see all of them.
+- [X] The exchange rates are cached to local storage so that they are saved between sessions.
 - [ ] Sort the currencies from most to least used.
 
 ## Demo
