@@ -34,7 +34,7 @@ export function Input({ value, setValue }: InputProps) {
 
   return (
     <input
-      className='form-input h-20 w-full pl-5 pr-40 text-5xl rounded-lg bg-uphold-paper text-uphold-text placeholder-uphold-muted focus:bg-white border-0 focus:border-uphold-text focus:border-2  focus:drop-shadow-none'
+      className='form-input h-20 w-full pl-5 pr-40 text-5xl rounded-lg bg-uphold-paper text-uphold-text placeholder-uphold-muted focus:bg-white border-0 focus:border-2 focus:border-uphold-text focus:shadow-uphold-text/50'
       type='text'
       placeholder='0.00'
       aria-labelledby='currency amount'
