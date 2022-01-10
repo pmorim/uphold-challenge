@@ -35,7 +35,7 @@ yarn dev
 - I used [Vite](https://vitejs.dev/) to create the `React` app instead of `CRA` because of its incredible speed.
 - I also used `TypeScript` instead of `JavaScript` because I prefer statically-typed languages.
 - For the styling, I used [Tailwind CSS](https://tailwindcss.com/) instead of plain `CSS` due to its faster styling process.
-- For the versioning system, I used the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) protocol to better organize my commits.
+- For the versioning system, I used the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) protocol to better organize my commits. I also used [Husky](https://github.com/typicode/husky) to add pre-commit lints and checks.
 
 ## Acceptance criteria
 
